@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Artikel</ui:define>
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="nr" value="#{artikelController.nummer}"/>
+            <f:viewAction action="#{artikelController.ladeDetail}" onPostback="true"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="inhalt">
+
+        <ui:fragment rendered="#{artikelController.artikel != null}">
+            <h1>#{artikelController.artikel.bezeichnung}</h1>
+            <div class="bilder">
+                <ui:repeat value="#{artikelController.artikel.bilder}" var="bild">
+                    <h:graphicImage value="/bild?id=#{bild.bildId}" styleClass="gross"
+                                    alt="#{bild.vollerDateiname}"/>
+                </ui:repeat>
+            </div>
+            <p>#{artikelController.artikel.beschreibung}</p>
+            <table class="daten">
+                <tr><th>Artikelnummer</th><td>#{artikelController.artikel.artikelnummer}</td></tr>
+                <tr><th>EAN</th><td>#{artikelController.artikel.ean}</td></tr>
+                <tr><th>Einheit</th><td>#{artikelController.artikel.einheit.bezeichnung}</td></tr>
+                <tr><th>Preis netto</th><td>
+                    <h:outputText value="#{artikelController.artikel.nettopreis}">
+                        <f:convertNumber type="currency" currencyCode="EUR"/>
+                    </h:outputText></td></tr>
+                <tr><th>Preis brutto</th><td><b>
+                    <h:outputText value="#{artikelController.artikel.bruttopreis}">
+                        <f:convertNumber type="currency" currencyCode="EUR"/>
+                    </h:outputText></b>
+                    (#{artikelController.artikel.steuersatz.prozentsatz} % USt.)</td></tr>
+                <tr><th>Auf Lager</th><td>#{artikelController.artikel.lagerbestand}</td></tr>
+            </table>
+
+        </ui:fragment>
+
+        <h:form rendered="#{not empty param.nr}">
+            Menge: <h:inputText value="#{artikelController.menge}" size="3"/>
+            <h:commandButton value="In den Warenkorb"
+                             action="#{warenkorbController.hinzufuegenNachNummer(artikelController.nummer, artikelController.menge)}">
+                <f:param name="nr" value="#{artikelController.nummer}"/>
+            </h:commandButton>
+        </h:form>
+        <p><h:outputLink value="artikel.xhtml">Zurueck zum Sortiment</h:outputLink></p>
+    </ui:define>
+</ui:composition>

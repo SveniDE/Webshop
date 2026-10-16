@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Kasse</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Kasse</h1>
+
+        <ui:fragment rendered="#{not loginController.kundeAngemeldet}">
+            <p>Zum Bestellen bitte als Kunde <h:outputLink value="konto.xhtml">anmelden</h:outputLink>.
+               Der Warenkorb bleibt dabei erhalten.</p>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{loginController.kundeAngemeldet and warenkorbController.warenkorb.istLeer()}">
+            <p>Der Warenkorb ist leer.</p>
+        </ui:fragment>
+
+        <h:form rendered="#{loginController.kundeAngemeldet and not warenkorbController.warenkorb.istLeer()}">
+            <p>Besteller: #{loginController.kunde.vollerName} (#{loginController.kundenart}),
+               Warenwert brutto vor Rabatt:
+               <h:outputText value="#{warenkorbController.warenkorb.summeBrutto}">
+                   <f:convertNumber type="currency" currencyCode="EUR"/>
+               </h:outputText></p>
+
+            <table class="daten">
+                <tr><th>Lieferadresse</th><td>
+                    <h:selectOneMenu value="#{kasseController.lieferadresseId}">
+                        <f:selectItems value="#{loginController.kunde.lieferadressen}" var="a"
+                                       itemValue="#{a.adresseId}" itemLabel="#{a.einzeilig}"/>
+                    </h:selectOneMenu></td></tr>
+                <tr><th>Rechnungsadresse</th><td>
+                    <h:selectOneMenu value="#{kasseController.rechnungsadresseId}">
+                        <f:selectItems value="#{loginController.kunde.rechnungsadressen}" var="a"
+                                       itemValue="#{a.adresseId}" itemLabel="#{a.einzeilig}"/>
+                    </h:selectOneMenu></td></tr>
+                <tr><th>Zahlungsart</th><td>
+                    <h:selectOneRadio value="#{kasseController.zahlungsart}" layout="pageDirection">
+                        <f:selectItem itemValue="Rechnungskauf" itemLabel="Rechnungskauf (zahlbar in 14 Tagen)"/>
+                        <f:selectItem itemValue="Lastschrift" itemLabel="Lastschrift"/>
+                    </h:selectOneRadio></td></tr>
+                <tr><th>IBAN</th><td><h:inputText value="#{kasseController.iban}" size="30"/>
+                    <span class="klein">nur bei Lastschrift</span></td></tr>
+                <tr><th>Kontoinhaber</th><td><h:inputText value="#{kasseController.kontoinhaber}" size="30"/></td></tr>
+            </table>
+            <h:commandButton value="Zahlungspflichtig bestellen" action="#{kasseController.abschicken}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

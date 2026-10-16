@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Versand</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Versand und Lieferung</h1>
+
+        <p>Wir verschicken alle Bestellungen aus unserem Lager in Siegen.</p>
+
+        <h3>Lieferzeit</h3>
+        <p>Bestellungen bis 14 Uhr verlassen unser Lager am selben Werktag.
+           In der Regel ist Ihre Bestellung nach zwei bis drei Werktagen bei Ihnen.</p>
+
+        <h3>Versandkosten</h3>
+        <table>
+            <tr>
+                <th>Bestellwert</th>
+                <th class="zahl">Versandkosten</th>
+            </tr>
+            <tr>
+                <td>bis 50,00 Euro</td>
+                <td class="zahl">4,90 Euro</td>
+            </tr>
+            <tr>
+                <td>ab 50,00 Euro</td>
+                <td class="zahl">kostenlos</td>
+            </tr>
+        </table>
+
+        <h3>Liefergebiet</h3>
+        <ul>
+            <li>Deutschland</li>
+            <li>Österreich</li>
+            <li>Schweiz (nur gegen Rechnung)</li>
+        </ul>
+
+        <p class="klein">Fragen zum Versand? Schauen Sie in unsere
+            <a href="faq.xhtml">häufigen Fragen</a>.</p>
+    </ui:define>
+</ui:composition>

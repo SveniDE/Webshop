@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "options": {
+        "env": { "NOPAUSE": "1" }
+    },
+    "tasks": [
+        {
+            "label": "Webshop: Pruefen",
+            "type": "shell",
+            "windows": { "command": ".\\0-pruefen.bat" },
+            "linux": { "command": "java -version && ./mvnw -version && ${env:HOME}/glassfish8/glassfish/bin/asadmin list-domains" },
+            "problemMatcher": []
+        },
+        {
+            "label": "Webshop: Server starten",
+            "type": "shell",
+            "windows": { "command": ".\\1-server-starten.bat" },
+            "linux": { "command": "${env:HOME}/glassfish8/glassfish/bin/asadmin start-domain" },
+            "problemMatcher": []
+        },
+        {
+            "label": "Webshop: Bauen und Deployen",
+            "type": "shell",
+            "windows": { "command": ".\\2-bauen-und-deployen.bat" },
+            "linux": { "command": "./mvnw clean package && ${env:HOME}/glassfish8/glassfish/bin/asadmin deploy --force=true target/webshop.war" },
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": []
+        },
+        {
+            "label": "Webshop: Server stoppen",
+            "type": "shell",
+            "windows": { "command": ".\\3-server-stoppen.bat" },
+            "linux": { "command": "${env:HOME}/glassfish8/glassfish/bin/asadmin stop-domain" },
+            "problemMatcher": []
+        },
+        {
+            "label": "Webshop: Server im Debug-Modus",
+            "type": "shell",
+            "windows": { "command": ".\\4-server-debug.bat" },
+            "linux": { "command": "${env:HOME}/glassfish8/glassfish/bin/asadmin stop-domain; ${env:HOME}/glassfish8/glassfish/bin/asadmin start-domain --debug" },
+            "problemMatcher": []
+        }
+    ]
+}

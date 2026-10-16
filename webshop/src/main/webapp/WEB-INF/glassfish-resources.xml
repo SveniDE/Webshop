@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC
+ "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN"
+ "https://raw.githubusercontent.com/eclipse-ee4j/glassfish/master/appserver/admin/dtds/src/main/resources/glassfish/lib/dtds/glassfish-resources_1_5.dtd">
+<resources>
+    <jdbc-connection-pool
+        name="java:app/shopPool"
+        datasource-classname="org.mariadb.jdbc.MariaDbDataSource"
+        res-type="javax.sql.DataSource"
+        is-isolation-level-guaranteed="false"
+        steady-pool-size="2"
+        max-pool-size="16">
+        <property name="url"      value="jdbc:mariadb://localhost:3306/shop"/>
+        <property name="user"     value="shopuser"/>
+        <property name="password" value="shoppass"/>
+    </jdbc-connection-pool>
+
+    <jdbc-resource
+        jndi-name="java:app/jdbc/shop"
+        pool-name="java:app/shopPool"/>
+</resources>

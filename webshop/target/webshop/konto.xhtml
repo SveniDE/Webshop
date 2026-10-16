@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Mein Konto</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Mein Konto</h1>
+
+        <h:form rendered="#{not loginController.angemeldet}">
+            <table class="daten">
+                <tr><th>Benutzername</th>
+                    <td><h:inputText value="#{loginController.benutzername}" required="true"
+                                     requiredMessage="Bitte Benutzernamen eingeben."/></td></tr>
+                <tr><th>Passwort</th>
+                    <td><h:inputSecret value="#{loginController.passwort}" required="true"
+                                       requiredMessage="Bitte Passwort eingeben."/></td></tr>
+            </table>
+            <h:commandButton value="Anmelden" action="#{loginController.anmelden}"/>
+            <p class="klein">Testkonten (Passwort jeweils geheim123): ayildiz (Privatkunde),
+                brandt (Geschaeftskunde, 5 % Rabatt), mnowak (gesperrt), admin (Administrator)</p>
+        </h:form>
+
+        <ui:fragment rendered="#{loginController.kundeAngemeldet}">
+            <table class="daten">
+                <tr><th>Name</th><td>#{loginController.kunde.anrede} #{loginController.kunde.vollerName}</td></tr>
+                <tr><th>Kundennummer</th><td>#{loginController.kunde.kundennummer}</td></tr>
+                <tr><th>Kundenart</th><td>#{loginController.kundenart}</td></tr>
+                <tr><th>Rabatt</th><td>#{loginController.kunde.rabattProzent} %</td></tr>
+                <tr><th>E-Mail</th><td>#{loginController.kunde.email}</td></tr>
+                <tr><th>Anschrift</th><td>#{loginController.kunde.anschrift.einzeilig}</td></tr>
+                <tr><th>Rechnungsadressen</th><td>
+                    <ui:repeat value="#{loginController.kunde.rechnungsadressen}" var="a">#{a.einzeilig}<br/></ui:repeat></td></tr>
+                <tr><th>Lieferadressen</th><td>
+                    <ui:repeat value="#{loginController.kunde.lieferadressen}" var="a">#{a.einzeilig}<br/></ui:repeat></td></tr>
+                <tr><th>Passwort zuletzt geaendert</th><td>
+                    <h:outputText value="#{loginController.konto.passwortGeaendertAm}">
+                        <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/>
+                    </h:outputText></td></tr>
+            </table>
+            <p >   </p>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{loginController.admin}">
+            <p>Angemeldet als Administrator. <h:outputLink value="admin.xhtml">Zum Admin-Bereich</h:outputLink></p>
+        </ui:fragment>
+
+        <h:form rendered="#{loginController.angemeldet}">
+            <h:commandButton value="Abmelden" action="#{loginController.abmelden}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

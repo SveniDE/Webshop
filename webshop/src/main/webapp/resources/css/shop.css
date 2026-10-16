@@ -1,0 +1,37 @@
+body        { font-family: sans-serif; margin: 0; color: #222; background: #f6f6f4; }
+main        { max-width: 64rem; margin: 0 auto; padding: 1rem 1.5rem 2rem; background: #fff; min-height: 70vh; }
+h1          { border-bottom: 2px solid #333; padding-bottom: .3rem; }
+a           { color: #1d4e89; }
+
+.kopf       { background: #23395b; color: #fff; padding: .6rem 1.5rem; display: flex;
+              align-items: center; gap: 2rem; flex-wrap: wrap; }
+.kopf a     { color: #fff; text-decoration: none; }
+.logo       { font-weight: bold; font-size: 1.4rem; }
+.status     { margin-left: auto; font-size: .9rem; }
+
+.menue      { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.2rem; }
+.menue > li { position: relative; }
+.untermenue { list-style: none; margin: 0; padding: .4rem .8rem; display: none; position: absolute;
+              background: #23395b; z-index: 10; white-space: nowrap; }
+.menue > li:hover .untermenue { display: block; }
+
+table       { border-collapse: collapse; margin: .5rem 0 1rem; }
+td, th      { border: 1px solid #bbb; padding: .35rem .6rem; text-align: left; vertical-align: top; }
+th          { background: #eef1f5; }
+.zahl       { text-align: right; white-space: nowrap; }
+.menge      { white-space: nowrap; }
+.klein      { font-size: .8rem; color: #555; }
+tr.warnung td { background: #fff4c2; }
+
+img.vorschau { width: 72px; height: 54px; object-fit: cover; border: 1px solid #ccc; }
+img.gross    { width: 240px; height: 180px; object-fit: cover; border: 1px solid #ccc; margin-right: .5rem; }
+
+.meldungen  { list-style: none; padding: 0; }
+.meldungen li { padding: .5rem .8rem; margin-bottom: .4rem; border-radius: 3px; }
+.info       { background: #e3f4e1; border: 1px solid #8bc48a; }
+.fehler     { background: #fbe3e3; border: 1px solid #d98a8a; }
+.meldebestand li { color: #8a5a00; }
+.beitrag    { border-left: 4px solid #23395b; padding-left: 1rem; margin-bottom: 1.2rem; }
+.einleitung { font-weight: bold; }
+.fuss       { text-align: center; font-size: .8rem; color: #666; padding: 1rem; }
+.fuss a     { margin-left: 1rem; }

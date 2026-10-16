@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Admin</ui:define>
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewAction action="#{adminController.pruefeZugriff}"/>
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Administration</h1>
+
+        <h2>Meldebestand</h2>
+        <ui:fragment rendered="#{empty adminController.meldungen}">
+            <p class="klein">Keine Meldungen seit dem Serverstart. Bestellen Sie z. B. zwei Funkmaeuse
+               oder USB-C-Kabel, dann erscheint hier eine Meldung (Observer).</p>
+        </ui:fragment>
+        <ul class="meldebestand">
+            <ui:repeat value="#{adminController.meldungen}" var="m"><li>#{m}</li></ui:repeat>
+        </ul>
+
+        <h2>Bestellungen</h2>
+        <h:form>
+            <table class="liste">
+                <tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Zahlung</th>
+                    <th>Netto</th><th>USt.</th><th>Brutto</th><th>Status</th><th>Rechnung</th><th>Aktion</th></tr>
+                <ui:repeat value="#{adminController.bestellungen}" var="b">
+                    <tr>
+                        <td>#{b.bestellnummer}</td>
+                        <td><h:outputText value="#{b.bestelldatum}">
+                            <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy HH:mm"/></h:outputText></td>
+                        <td>#{b.kunde.vollerName}<div class="klein">#{b.kunde.kundennummer}</div></td>
+                        <td>#{b.zahlungsart.bezeichnung}</td>
+                        <td class="zahl"><h:outputText value="#{b.summeNetto}">
+                            <f:convertNumber type="currency" currencyCode="EUR"/></h:outputText></td>
+                        <td class="zahl"><h:outputText value="#{b.summeSteuer}">
+                            <f:convertNumber type="currency" currencyCode="EUR"/></h:outputText></td>
+                        <td class="zahl"><b><h:outputText value="#{b.summeBrutto}">
+                            <f:convertNumber type="currency" currencyCode="EUR"/></h:outputText></b></td>
+                        <td>#{b.status}
+                            <ui:fragment rendered="#{b.ausfuehrungsdatum != null}">
+                                <div class="klein">am <h:outputText value="#{b.ausfuehrungsdatum}">
+                                    <f:convertDateTime type="localDate" pattern="dd.MM.yyyy"/></h:outputText></div>
+                            </ui:fragment>
+                        </td>
+                        <td>
+                            <ui:fragment rendered="#{adminController.rechnungZu(b) != null}">
+                                #{adminController.rechnungZu(b).rechnungsnummer}
+                                <div class="klein">faellig <h:outputText value="#{adminController.rechnungZu(b).faelligkeit}">
+                                    <f:convertDateTime type="localDate" pattern="dd.MM.yyyy"/></h:outputText></div>
+                            </ui:fragment>
+                        </td>
+                        <td>
+                            <h:commandButton value="Ausfuehren" action="#{adminController.ausfuehren(b)}"
+                                             rendered="#{b.status == 'offen'}"/>
+                            <h:commandButton value="Stornieren" action="#{adminController.stornieren(b)}"
+                                             rendered="#{b.status == 'offen'}"/>
+                            <h:commandButton value="Rechnung erstellen" action="#{adminController.rechnungErstellen(b)}"
+                                             rendered="#{b.status == 'ausgefuehrt' and adminController.rechnungZu(b) == null}"/>
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </table>
+        </h:form>
+
+        <h2>Artikel pflegen</h2>
+        <h:form>
+            <table class="liste">
+                <tr><th>Nummer</th><th>Bezeichnung</th><th>Nettopreis</th><th>Bestand</th><th>Meldebestand</th></tr>
+                <ui:repeat value="#{adminController.artikelListe}" var="a">
+                    <tr class="#{a.istUnterMeldebestand() ? 'warnung' : ''}">
+                        <td>#{a.artikelnummer}</td>
+                        <td>#{a.bezeichnung}</td>
+                        <td><h:inputText value="#{a.nettopreis}" size="7" label="Preis #{a.artikelnummer}"/></td>
+                        <td><h:inputText value="#{a.lagerbestand}" size="4" label="Bestand #{a.artikelnummer}"/></td>
+                        <td><h:inputText value="#{a.meldebestand}" size="4" label="Meldebestand #{a.artikelnummer}"/></td>
+                    </tr>
+                </ui:repeat>
+            </table>
+            <p class="klein">Dezimalzahlen mit Punkt eingeben, z. B. 19.90. Gelb: unter Meldebestand.</p>
+            <h:commandButton value="Alle Artikel speichern" action="#{adminController.artikelSpeichern}"/>
+        </h:form>
+
+        <h2>Neuer Artikel</h2>
+        <h:form>
+            <table class="daten">
+                <tr><th>Artikelnummer</th><td><h:inputText value="#{adminController.neuNummer}"
+                    required="true" requiredMessage="Artikelnummer fehlt."/></td></tr>
+                <tr><th>Bezeichnung</th><td><h:inputText value="#{adminController.neuBezeichnung}" size="40"
+                    required="true" requiredMessage="Bezeichnung fehlt."/></td></tr>
+                <tr><th>Beschreibung</th><td><h:inputTextarea value="#{adminController.neuBeschreibung}" cols="40" rows="2"/></td></tr>
+                <tr><th>Nettopreis</th><td><h:inputText value="#{adminController.neuPreis}" size="7"
+                    required="true" requiredMessage="Preis fehlt." label="Nettopreis"/></td></tr>
+                <tr><th>Steuersatz</th><td>
+                    <h:selectOneMenu value="#{adminController.neuSteuerId}">
+                        <f:selectItems value="#{adminController.steuersaetze}" var="s"
+                                       itemValue="#{s.steuerId}" itemLabel="#{s.bezeichnung} (#{s.prozentsatz} %)"/>
+                    </h:selectOneMenu></td></tr>
+                <tr><th>Einheit</th><td>
+                    <h:selectOneMenu value="#{adminController.neuEinheitId}">
+                        <f:selectItems value="#{adminController.einheiten}" var="e"
+                                       itemValue="#{e.einheitId}" itemLabel="#{e.bezeichnung}"/>
+                    </h:selectOneMenu></td></tr>
+                <tr><th>Lagerbestand</th><td><h:inputText value="#{adminController.neuBestand}" size="4"/></td></tr>
+                <tr><th>Meldebestand</th><td><h:inputText value="#{adminController.neuMeldebestand}" size="4"/></td></tr>
+            </table>
+            <h:commandButton value="Artikel anlegen" action="#{adminController.artikelAnlegen}"/>
+        </h:form>
+
+        <h:form>
+            <p><h:commandButton value="Abmelden" action="#{loginController.abmelden}"/></p>
+        </h:form>
+    </ui:define>
+</ui:composition>

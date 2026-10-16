@@ -1,0 +1,14 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">FAQ</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Haeufige Fragen</h1>
+        <ui:repeat value="#{inhaltController.faqs}" var="f">
+            <h3>#{f.frage}</h3>
+            <p>#{f.antwort}</p>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>

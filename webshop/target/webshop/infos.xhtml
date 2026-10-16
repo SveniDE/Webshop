@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Infos</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Infos und Versand</h1>
+        <ui:repeat value="#{inhaltController.beitraege}" var="b">
+            <section class="beitrag">
+                <h2>#{b.ueberschrift}</h2>
+                <p class="einleitung">#{b.einleitung}</p>
+                <p>#{b.haupttext}</p>
+                <p class="klein">Erstellt am
+                    <h:outputText value="#{b.erstelltAm}">
+                        <f:convertDateTime type="localDateTime" pattern="dd.MM.yyyy"/>
+                    </h:outputText></p>
+            </section>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>

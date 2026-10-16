@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Danke</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Vielen Dank fuer Ihre Bestellung</h1>
+        <p>Ihre Bestellnummer: <b>#{param.nr}</b></p>
+        <p>Die Bestellung ist jetzt offen. Sobald die Ware zugestellt ist, wird sie
+           ausgefuehrt und Sie erhalten Ihre Rechnung.</p>
+        <p><h:outputLink value="artikel.xhtml">Weiter einkaufen</h:outputLink></p>
+    </ui:define>
+</ui:composition>

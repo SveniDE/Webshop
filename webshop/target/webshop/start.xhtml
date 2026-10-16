@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Start</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Willkommen bei unserem Shop</h1>
+        <p>Fachbuecher, Zubehoer und alles fuer lange Lerntage.
+           <h:outputLink value="artikel.xhtml">Zum Sortiment</h:outputLink></p>
+
+        <ui:repeat value="#{inhaltController.beitraege}" var="b">
+            <section class="beitrag">
+                <h2>#{b.ueberschrift}</h2>
+                <p class="einleitung">#{b.einleitung}</p>
+            </section>
+        </ui:repeat>
+    </ui:define>
+</ui:composition>

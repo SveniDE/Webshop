@@ -1,0 +1,19 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Probelauf",
+            "request": "launch",
+            "mainClass": "de.meinshop.webshop.Probelauf",
+            "projectName": "webshop"
+        },
+        {
+            "type": "java",
+            "name": "An GlassFish anhaengen",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 9009
+        }
+    ]
+}

@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Warenkorb</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Warenkorb</h1>
+
+        <h:panelGroup rendered="#{warenkorbController.warenkorb.istLeer()}">
+            <p>Der Warenkorb ist leer. <h:outputLink value="artikel.xhtml">Zum Sortiment</h:outputLink></p>
+        </h:panelGroup>
+
+        <h:form rendered="#{not warenkorbController.warenkorb.istLeer()}">
+            <table class="liste">
+                <tr><th>Artikel</th><th>Einzelpreis</th><th>Menge</th><th>Summe</th><th></th></tr>
+                <ui:repeat value="#{warenkorbController.warenkorb.positionen}" var="p">
+                    <tr>
+                        <td>#{p.artikel.bezeichnung}</td>
+                        <td class="zahl">
+                            <h:outputText value="#{p.artikel.bruttopreis}">
+                                <f:convertNumber type="currency" currencyCode="EUR"/>
+                            </h:outputText>
+                        </td>
+                        <td class="menge">
+                            <h:commandButton value="-" action="#{warenkorbController.verringern(p)}"/>
+                            #{p.menge}
+                            <h:commandButton value="+" action="#{warenkorbController.erhoehen(p)}"/>
+                        </td>
+                        <td class="zahl">
+                            <h:outputText value="#{p.summeBrutto}">
+                                <f:convertNumber type="currency" currencyCode="EUR"/>
+                            </h:outputText>
+                        </td>
+                        <td><h:commandButton value="Entfernen" action="#{warenkorbController.entfernen(p)}"/></td>
+                    </tr>
+                </ui:repeat>
+                <tr><th colspan="3">Summe netto</th><td class="zahl">
+                    <h:outputText value="#{warenkorbController.warenkorb.summeNetto}">
+                        <f:convertNumber type="currency" currencyCode="EUR"/>
+                    </h:outputText></td><td></td></tr>
+                <tr><th colspan="3">Summe brutto (#{warenkorbController.warenkorb.anzahlArtikel} Teile)</th><td class="zahl"><b>
+                    <h:outputText value="#{warenkorbController.warenkorb.summeBrutto}">
+                        <f:convertNumber type="currency" currencyCode="EUR"/>
+                    </h:outputText></b></td><td></td></tr>
+            </table>
+            <p>
+                <h:commandButton value="Warenkorb leeren" action="#{warenkorbController.leeren}"/>
+                <h:button value="Zur Kasse" outcome="kasse"/>
+            </p>
+            <p class="klein">Rabatte fuer Geschaeftskunden werden an der Kasse abgezogen.</p>
+        </h:form>
+    </ui:define>
+</ui:composition>

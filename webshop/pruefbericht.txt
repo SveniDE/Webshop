@@ -1,0 +1,12 @@
+Pruefbericht Webshop 
+Datum: 09.10.2026  9:05:26,99 
+openjdk version "25.0.4.1" 2026-08-18 LTS
+OpenJDK Runtime Environment Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS)
+OpenJDK 64-Bit Server VM Temurin-25.0.4.1+1 (build 25.0.4.1+1-LTS, mixed mode, sharing)
+[2] JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-25.0.4.101-hotspot 
+[3] GlassFish gefunden: C:\glassfish8 
+[4] mvnw.cmd vorhanden 
+[5] Projektpfad: C:\projekte\webshop\ 
+  TCP    0.0.0.0:3306           0.0.0.0:0              ABH™REN         5600
+  TCP    [::]:3306              [::]:0                 ABH™REN         5600
+ERGEBNIS: alles bereit 

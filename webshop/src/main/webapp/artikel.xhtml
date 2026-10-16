@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:ui="jakarta.faces.facelets"
+                template="/layout/vorlage.xhtml">
+
+    <ui:define name="titel">Artikel</ui:define>
+
+    <ui:define name="inhalt">
+        <h1>Unser Sortiment</h1>
+        <h:form>
+            <table class="liste">
+                <tr><th>Bild</th><th>Artikel</th><th>Preis</th><th>Lieferbar</th><th></th></tr>
+                <ui:repeat value="#{artikelController.liste}" var="a">
+                    <tr>
+                        <td>
+                            <h:graphicImage value="/bild?id=#{a.hauptbild.bildId}" styleClass="vorschau"
+                                            alt="#{a.bezeichnung}" rendered="#{a.hauptbild != null}"/>
+                        </td>
+                        <td>
+                            <h:link outcome="detail" value="#{a.bezeichnung}">
+                                <f:param name="nr" value="#{a.artikelnummer}"/>
+                            </h:link>
+                            <div class="klein">#{a.artikelnummer}, je #{a.einheit.bezeichnung}</div>
+                        </td>
+                        <td class="zahl">
+                            <h:outputText value="#{a.bruttopreis}">
+                                <f:convertNumber type="currency" currencyCode="EUR"/>
+                            </h:outputText>
+                            <div class="klein">inkl. #{a.steuersatz.prozentsatz} % USt.</div>
+                        </td>
+                        <td>#{a.istLieferbar() ? 'ja' : 'nein'}</td>
+                        <td>
+                            <h:commandButton value="In den Warenkorb"
+                                             action="#{warenkorbController.hinzufuegen(a, 1)}"
+                                             disabled="#{not a.istLieferbar()}"/>
+                        </td>
+                    </tr>
+                </ui:repeat>
+            </table>
+        </h:form>
+    </ui:define>
+</ui:composition>

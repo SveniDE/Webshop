@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:ui="jakarta.faces.facelets">
+<f:view locale="de">
+<ui:insert name="metadata"/>
+<h:head>
+    <meta charset="utf-8"/>
+    <title>Unser Shop: <ui:insert name="titel">Start</ui:insert></title>
+    <h:outputStylesheet name="css/shop.css"/>
+</h:head>
+<h:body>
+    <header class="kopf">
+        <h:outputLink value="start.xhtml" styleClass="logo">Unser Shop</h:outputLink>
+        <nav>
+            <ui:include src="/includes/menue.xhtml"/>
+        </nav>
+        <div class="status">
+            <h:outputLink value="warenkorb.xhtml">
+                Warenkorb (#{warenkorbController.warenkorb.anzahlArtikel})
+            </h:outputLink>
+            <h:outputText value=" | Angemeldet: #{loginController.konto.benutzername}"
+                          rendered="#{loginController.angemeldet}"/>
+            <h:outputLink value="admin.xhtml" rendered="#{loginController.admin}"> | Admin</h:outputLink>
+        </div>
+    </header>
+
+    <main>
+        <h:messages styleClass="meldungen" infoClass="info" errorClass="fehler"/>
+        <ui:insert name="inhalt"/>
+    </main>
+
+    <footer class="fuss">
+        UnserShop Uebungsprojekt 
+        <h:outputLink value="index.xhtml">Systemtest</h:outputLink>
+    </footer>
+</h:body>
+</f:view>
+</html>

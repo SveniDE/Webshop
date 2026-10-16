@@ -1,0 +1,18 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="jakarta.faces.html"
+                xmlns:ui="jakarta.faces.facelets">
+    <ul class="menue">
+        <ui:repeat value="#{inhaltController.menue}" var="m">
+            <li>
+                <h:outputLink value="#{m.dateiname}">#{m.bezeichnung}</h:outputLink>
+                <ui:fragment rendered="#{not empty m.untereintraege}">
+                    <ul class="untermenue">
+                        <ui:repeat value="#{m.untereintraege}" var="u">
+                            <li><h:outputLink value="#{u.dateiname}">#{u.bezeichnung}</h:outputLink></li>
+                        </ui:repeat>
+                    </ul>
+                </ui:fragment>
+            </li>
+        </ui:repeat>
+    </ul>
+</ui:composition>
